@@ -44,14 +44,12 @@ const UserLogin = ({ showDropBox = true }) => {
   }
   const submit = () => {
     const token = localStorage.getItem("token");
+    let applicationId;
     axios
       .post(
         "/application",
         {
           name: scheme,
-          documentLink: URL,
-          org,
-          contact,
         },
         {
           headers: {
@@ -60,9 +58,33 @@ const UserLogin = ({ showDropBox = true }) => {
           },
         }
       )
-      .then((response) => {})
+      .then((response) => {
+        applicationId = response.data._id;
+        axios
+          .post(
+            "/document",
+            {
+              uploadedBy: id,
+              documentLink: URL,
+              organisationName: org,
+              organisationContact: contact,
+              applicationId,
+              title: "10th Marksheet",
+            },
+            {
+              headers: {
+                Authorization: token,
+                USER: "USER",
+              },
+            }
+          )
+          .then((response) => console.log(response))
+          .catch((error) => console.log(error));
+      })
       .catch((error) => console.log(error));
     // console.log(scheme);
+    const id = localStorage.getItem("id");
+    // console.log(applicationId);
   };
   return (
     <Box sx={{ display: "flex" }}>

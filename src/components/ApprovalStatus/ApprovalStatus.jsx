@@ -17,9 +17,10 @@ const ApprovalStatus = () => {
   const [data, setData] = useState();
   const [revert, setRevert] = useState(false);
   const token = localStorage.getItem("token");
+  const id = localStorage.getItem("id");
   useEffect(() => {
     axios
-      .get("/ticket/user/approval", {
+      .get(`/ticket/user/approval/`, {
         headers: {
           Authorization: token,
           USER: "USER",
@@ -52,15 +53,17 @@ const ApprovalStatus = () => {
                   sx={{ display: "flex", gap: "50px", flexDirection: "column" }}
                 >
                   <Typography variant="subtitle1" style={{ fontWeight: "600" }}>
-                    {dat.scheme.name}
+                    {dat.status != -1 ? dat.scheme.name : "Rejected"}
                   </Typography>
-                  <Stepper activeStep={dat.status - 1} alternativeLabel>
-                    {steps.map((label) => (
-                      <Step key={label}>
-                        <StepLabel>{label}</StepLabel>
-                      </Step>
-                    ))}
-                  </Stepper>
+                  {dat.status != -1 && (
+                    <Stepper activeStep={dat.status - 1} alternativeLabel>
+                      {steps.map((label) => (
+                        <Step key={label}>
+                          <StepLabel>{label}</StepLabel>
+                        </Step>
+                      ))}
+                    </Stepper>
+                  )}
                 </Box>
               );
             })}

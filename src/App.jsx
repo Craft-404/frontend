@@ -13,6 +13,7 @@ import "./index.css";
 
 function App() {
   const token = localStorage.getItem("token");
+  console.log = () => {};
   return (
     <div style={{ height: "100%" }}>
       <Routes>

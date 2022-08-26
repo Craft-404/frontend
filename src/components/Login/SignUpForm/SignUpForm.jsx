@@ -32,16 +32,20 @@ const SignUpForm = () => {
     }
     if (user == "EMPLOYEE") {
       localStorage.setItem("user", "EMPLOYEE");
+      console.log(user);
       axios
         .post("/auth/login", { email, password })
         .then((response) => {
+          // localStorage.clear();
           localStorage.setItem("token", response.data.token);
+          localStorage.setItem("user", "EMPLOYEE");
           localStorage.setItem("designation", response.data.designationId);
           localStorage.setItem("bureau", response.data.bureau);
           navigate("/createemployee");
         })
         .catch((error) => console.log(error));
     } else {
+      // localStorage.clear();
       localStorage.setItem("user", "USER");
       localStorage.setItem("userType", user);
       axios
@@ -50,6 +54,7 @@ const SignUpForm = () => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("designation", response.data.designationId);
           localStorage.setItem("bureau", response.data.bureau);
+          localStorage.setItem("id", response.data.user._id);
           navigate("/userlogin");
         })
         .catch((error) => console.log(error));
