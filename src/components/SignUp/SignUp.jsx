@@ -1,9 +1,8 @@
-import { Box } from "@mui/system";
-import SignUpForm from "./SignUpForm/SignUpForm";
+import { Box } from "@mui/material";
 import LoginImage from "../../assets/images/LoginImage.png";
-import { Button } from "@mui/material";
+import NewUserSignInForm from "../NewUserSignInForm/NewUserSignInForm";
 
-const Login = () => {
+const SignUp = () => {
   return (
     <Box
       sx={{
@@ -20,7 +19,7 @@ const Login = () => {
           padding: 15,
         }}
       >
-        <SignUpForm />
+        <NewUserSignInForm />
       </Box>
       <Box
         sx={{
@@ -36,4 +35,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

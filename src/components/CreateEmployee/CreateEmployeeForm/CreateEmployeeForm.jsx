@@ -4,11 +4,14 @@ import {
   Card,
   CardContent,
   IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "../../axiosInstance";
 import Toast from "../../Toast/Toast";
 
@@ -23,16 +26,55 @@ const CreateEmployeeForm = () => {
   const [showToast, setShowToast] = useState(false);
   const [message, setMessage] = useState();
   const [severity, setSeverity] = useState();
+  const [designation, setDesignation] = useState();
+  const [bureau, setBerau] = useState();
+  const token = localStorage.getItem("token");
+  const designationArray = [
+    {
+      id: "630749082d9754bace7d6d03",
+      name: "Admin",
+    },
+    {
+      id: "630749082d9754bace7d6d02",
+      name: "Level 3",
+    },
+    {
+      id: "630749082d9754bace7d6d01",
+      name: "Level 2",
+    },
+    {
+      id: "630749082d9754bace7d6d00",
+      name: "Level 1",
+    },
+  ];
+
+  const bureauArray = [
+    { id: "6306fdce5e6d5b3c5355535c", name: "Administration" },
+    { id: "6306fdce5e6d5b3c5355535e", name: "Approval" },
+    { id: "6306fdce5e6d5b3c5355535d", name: "Finance" },
+  ];
   const submitData = () => {
+    const token = localStorage.getItem("token");
     axios
-      .post("/auth", {
-        email,
-        password,
-        phone,
-        username: userName,
-        name,
-        date,
-      })
+      .post(
+        "/auth",
+        {
+          email,
+          password,
+          phone,
+          username: userName,
+          name,
+          daetOfJoining: date,
+          designationId: designation,
+          bureauId: bureau,
+        },
+        {
+          headers: {
+            Authorization: token,
+            USER: "EMPLOYEE",
+          },
+        }
+      )
       .then((response) => {
         setShowToast(true);
         setMessage("Employee Created Successfully");
@@ -132,6 +174,55 @@ const CreateEmployeeForm = () => {
             onChange={(e) => setDate(e.target.value)}
             sx={{ marginTop: "30px" }}
           />
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <InputLabel
+              id="demo-simple-select-label"
+              sx={{ marginTop: "30px" }}
+            >
+              Designation
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              fullWidth
+              value={designation}
+              label="Student Scheme."
+              style={{ marginTop: "10px", width: "400px" }}
+              onChange={(e) => setDesignation(e.target.value)}
+            >
+              {designationArray?.map((scheme, idx) => {
+                return (
+                  <MenuItem key={idx} value={scheme.id}>
+                    {scheme.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </Box>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <InputLabel
+              id="demo-simple-select-label"
+              sx={{ marginTop: "30px" }}
+            >
+              Bureau
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={bureau}
+              label="Student Scheme."
+              style={{ marginTop: "10px", width: "400px" }}
+              onChange={(e) => setBerau(e.target.value)}
+            >
+              {bureauArray?.map((scheme, idx) => {
+                return (
+                  <MenuItem key={idx} value={scheme.id}>
+                    {scheme.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </Box>
           <Button
             onClick={submitData}
             variant="contained"
